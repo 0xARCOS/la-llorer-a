@@ -6,6 +6,7 @@ class Fuente:
         raise NotImplementedError
 
 
+import logging
 import requests
 from bs4 import BeautifulSoup
 
@@ -16,7 +17,12 @@ class EventbriteFuente(Fuente):
     def obtener_eventos(self):
         url = 'https://www.eventbrite.es/d/spain--madrid/tecnologia/'
         headers = {'User-Agent': 'Mozilla/5.0'}
-        r = requests.get(url, headers=headers)
+        try:
+            r = requests.get(url, headers=headers, timeout=10)
+            r.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            logging.error("Error al obtener Eventbrite: %s", e)
+            return []
         soup = BeautifulSoup(r.text, 'html.parser')
         eventos = []
         for card in soup.select('div.eds-event-card-content__content'):
@@ -36,7 +42,12 @@ class MeetupFuente(Fuente):
     def obtener_eventos(self):
         url = 'https://www.meetup.com/find/events/?allMeetups=true&keywords=tech&radius=10&userFreeform=Madrid%2C+Spain'
         headers = {'User-Agent': 'Mozilla/5.0'}
-        r = requests.get(url, headers=headers)
+        try:
+            r = requests.get(url, headers=headers, timeout=10)
+            r.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            logging.error("Error al obtener Meetup: %s", e)
+            return []
         soup = BeautifulSoup(r.text, 'html.parser')
         eventos = []
         for card in soup.select('li[data-eventid]'):
@@ -58,7 +69,12 @@ class GDGFuente(Fuente):
     def obtener_eventos(self):
         url = 'https://gdg.community.dev/gdg-madrid/'
         headers = {'User-Agent': 'Mozilla/5.0'}
-        r = requests.get(url, headers=headers)
+        try:
+            r = requests.get(url, headers=headers, timeout=10)
+            r.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            logging.error("Error al obtener GDG: %s", e)
+            return []
         soup = BeautifulSoup(r.text, 'html.parser')
         eventos = []
         for card in soup.select('div.event-card'):
@@ -78,7 +94,12 @@ class OpenExpoFuente(Fuente):
     def obtener_eventos(self):
         url = 'https://openexpoeurope.com/category/eventos/'
         headers = {'User-Agent': 'Mozilla/5.0'}
-        r = requests.get(url, headers=headers)
+        try:
+            r = requests.get(url, headers=headers, timeout=10)
+            r.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            logging.error("Error al obtener OpenExpo: %s", e)
+            return []
         soup = BeautifulSoup(r.text, 'html.parser')
         eventos = []
         for card in soup.select('article'):
@@ -98,7 +119,12 @@ class CodemotionFuente(Fuente):
     def obtener_eventos(self):
         url = 'https://community.codemotion.com/events?city=Madrid'
         headers = {'User-Agent': 'Mozilla/5.0'}
-        r = requests.get(url, headers=headers)
+        try:
+            r = requests.get(url, headers=headers, timeout=10)
+            r.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            logging.error("Error al obtener Codemotion: %s", e)
+            return []
         soup = BeautifulSoup(r.text, 'html.parser')
         eventos = []
         for card in soup.select('div.event-card'):
@@ -118,7 +144,12 @@ class HackathonFuente(Fuente):
     def obtener_eventos(self):
         url = 'https://www.hackathon.com/country/spain?city=Madrid'
         headers = {'User-Agent': 'Mozilla/5.0'}
-        r = requests.get(url, headers=headers)
+        try:
+            r = requests.get(url, headers=headers, timeout=10)
+            r.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            logging.error("Error al obtener Hackathon: %s", e)
+            return []
         soup = BeautifulSoup(r.text, 'html.parser')
         eventos = []
         for card in soup.select('div.hackathon-card'):
