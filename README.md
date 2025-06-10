@@ -5,3 +5,17 @@ Este proyecto extrae eventos tecnológicos de varias fuentes (Eventbrite, Meetup
 ```
 python scraper.py
 ```
+
+## Automatización semanal
+
+Puedes programar la ejecución automática del scraper cada semana de varias maneras.
+
+### Cron
+Si ejecutas el proyecto en un servidor Linux puedes añadir la siguiente entrada de cron para lanzarlo los lunes a las 10:00:
+
+```
+0 10 * * MON /home/usuario/lloreria_env/bin/python /ruta/scraper.py
+```
+
+### GitHub Actions
+Otra opción es usar GitHub Actions. Configura los secretos `OPENAI_API_KEY` y `ADMIN_KEY` y utiliza el flujo de trabajo incluido en `.github/workflows/weekly.yml`. Ejecutará el scraper todos los lunes a las 10:00.
