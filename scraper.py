@@ -1,11 +1,10 @@
 # scraper.py
 import csv
-import requests
-from bs4 import BeautifulSoup
 import openai
 import os
 from dotenv import load_dotenv
 import getpass
+from fuentes import todas
 
 # Carga variables de entorno desde .env
 load_dotenv()
@@ -18,24 +17,7 @@ def verificar_admin():
         print("❌ Clave incorrecta. Acceso denegado.")
         exit()
 
-# Paso 1: Scraping simple de Eventbrite
-def obtener_eventos_eventbrite():
-    url = 'https://www.eventbrite.es/d/spain--madrid/tecnologia/'
-    headers = {'User-Agent': 'Mozilla/5.0'}
-    r = requests.get(url, headers=headers)
-    soup = BeautifulSoup(r.text, 'html.parser')
-    eventos = []
-
-    for card in soup.select('div.eds-event-card-content__content'):
-        try:
-            titulo = card.select_one('div.eds-event-card-content__title').text.strip()
-            fecha = card.select_one('div.eds-event-card-content__sub-title').text.strip()
-            enlace = card.find_parent('a')['href']
-            eventos.append({'titulo': titulo, 'fecha': fecha, 'enlace': enlace})
-        except Exception:
-            continue
-
-    return eventos
+# Paso 1: Obtener eventos de múltiples fuentes
 
 # Paso 2: Clasificación temática
 def clasificar_evento(titulo):
@@ -79,7 +61,12 @@ def guardar_eventos_csv(eventos, nombre_archivo="eventos.csv"):
 # Ejecutar todo
 def main():
     verificar_admin()
-    eventos = obtener_eventos_eventbrite()
+    eventos = []
+    for fuente in todas:
+        try:
+            eventos.extend(fuente.obtener_eventos())
+        except Exception as e:
+            print(f"⚠️ Error al obtener eventos de {fuente.__class__.__name__}: {e}")
     for e in eventos:
         e['categoria'] = clasificar_evento(e['titulo'])
         e['humor'] = generar_resumen_humor(e)
