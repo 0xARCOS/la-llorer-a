@@ -15,7 +15,7 @@ def generar_copy(evento):
     )
     try:
         res = openai.Completion.create(
-            engine="text-davinci-003",
+            model="text-davinci-003",
             prompt=prompt,
             max_tokens=40,
             temperature=0.7,
