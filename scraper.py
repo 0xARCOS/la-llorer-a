@@ -20,6 +20,20 @@ logging.basicConfig(
 )
 
 def verificar_admin():
+    """Solicita la clave de administrador solo si no se proporcionó por
+    variable de entorno.
+
+    Cuando el script se ejecuta de forma automática (por ejemplo en
+    GitHub Actions) se espera que `ADMIN_KEY` ya esté definida, por lo que
+    se omite la petición interactiva.
+    """
+    if os.getenv("GITHUB_ACTIONS") == "true":
+        # En entornos no interactivos confiamos en la clave del entorno
+        if not ADMIN_KEY:
+            print("❌ ADMIN_KEY no configurada. Acceso denegado.")
+            exit()
+        return
+
     clave = getpass.getpass("🔐 Ingresa la clave de administrador: ")
     if clave != ADMIN_KEY:
         print("❌ Clave incorrecta. Acceso denegado.")

@@ -21,7 +21,10 @@ Con todo listo ejecuta:
 ```bash
 python scraper.py
 ```
-Se pedirá la clave de administrador y tras completarse obtendrás `eventos.csv`.
+Si ejecutas el script de forma local se pedirá la clave de administrador.
+Cuando la variable `ADMIN_KEY` esté definida en el entorno (por ejemplo al
+usar GitHub Actions) la petición interactiva se omitirá y el resultado se
+guardará directamente en `eventos.csv`.
 
 ## Automatización semanal
 
