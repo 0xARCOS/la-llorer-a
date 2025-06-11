@@ -46,7 +46,7 @@ def clasificar_evento(titulo):
     prompt = f"Clasifica este evento tech: '{titulo}' en una de estas categorías: IA, Ciberseguridad, Web, Absurdos, Otro.\nCategoría:"
     try:
         res = openai.Completion.create(
-            engine="text-davinci-003",
+            model="text-davinci-003",
             prompt=prompt,
             max_tokens=10,
             temperature=0.2,
@@ -70,7 +70,7 @@ Ejemplo de tono: “Un taller donde los asistentes creen que están revolucionan
 Resumen:"""
     try:
         res = openai.Completion.create(
-            engine="text-davinci-003",
+            model="text-davinci-003",
             prompt=prompt,
             max_tokens=100,
             temperature=0.8,
