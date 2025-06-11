@@ -15,6 +15,12 @@ Al ejecutarlo se guardan los resultados en `eventos.csv`.
    ```bash
    pip install -r requirements.txt
    ```
+   Si utilizas Debian/Ubuntu con Python 3.12, [PEP 668](https://peps.python.org/pep-0668/)
+   puede impedir la instalación con un error "externally-managed-environment". Ejecuta en
+   su lugar:
+   ```bash
+   pip install --break-system-packages -r requirements.txt
+   ```
 3. Copia el archivo `.env.example` a `.env` e indica tus claves `OPENAI_API_KEY` y `ADMIN_KEY`.
 
 Con todo listo ejecuta:
